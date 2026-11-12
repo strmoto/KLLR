@@ -3,77 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Game Website</title>
+  <meta name="theme-color" content="#0b0b12">
+  <title>Doodle Jump | KLLR</title>
   <style>
-    /* Adjust the style of the iframe to fit your layout */
+    :root {
+      color-scheme: dark;
+      --surface: rgba(19, 18, 29, .88);
+      --surface-hover: rgba(39, 34, 55, .96);
+      --accent: #a78bfa;
+      --accent-glow: rgba(167, 139, 250, .28);
+      --text: #f7f5ff;
+      --muted: #c4bdd6;
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body {
+      background: #0b0b12;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
     iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: fixed;
+      inset: 0;
+      display: block;
       width: 100%;
       height: 100%;
-      border: none; /* Remove border */
+      border: 0;
+      background: #08080d;
     }
-
-    /* Style for the navigation buttons */
-    .nav-button {
+    .player-controls {
       position: fixed;
-      width: 50px;
-      height: 50px;
-      background-color: rgba(0, 0, 0, 0.5); /* Slightly opaque black */
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 24px;
-      line-height: 50px;
-      text-align: center;
-      cursor: pointer;
-      z-index: 9999; /* Ensure the buttons are above the iframe */
-      transition: background-color 0.3s ease; /* Smooth transition on hover */
-    }
-
-    .nav-button:hover {
-      background-color: rgba(0, 0, 0, 0.8); /* Darker black on hover */
-    }
-
-    /* Positioning for the home button */
-    #home-button {
-      left: 10px;
-      top: 10px;
-    }
-
-    /* Positioning for the fullscreen button */
-    #fullscreen-button {
-      right: 10px;
-      top: 10px;
-    }
-
-    /* Center the icon vertically and horizontally */
-    .nav-button i {
+      z-index: 9999;
+      inset: max(14px, env(safe-area-inset-top)) 14px auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      pointer-events: none;
+    }
+    .nav-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-width: 46px;
+      min-height: 46px;
+      padding: 0 15px;
+      border: 1px solid rgba(196, 181, 253, .25);
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .3), 0 0 18px var(--accent-glow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      font: 600 14px/1 inherit;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: background-color .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .nav-button:hover {
+      background: var(--surface-hover);
+      border-color: rgba(196, 181, 253, .65);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38), 0 0 22px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .nav-button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .nav-button i { font-size: 16px; }
+    @media (max-width: 520px) {
+      .player-controls { inset-inline: 10px; }
+      .nav-button { min-width: 44px; min-height: 44px; padding: 0 12px; }
+      .nav-button .button-label { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
   </style>
 </head>
 <body>
-  <!-- Home Button -->
-  <button id="home-button" class="nav-button" onclick="goHome()"><i class="fas fa-home"></i></button>
-
-  <!-- Fullscreen Button -->
-  <button id="fullscreen-button" class="nav-button" onclick="toggleFullScreen()"><i class="fas fa-expand"></i></button>
-
-  <!-- Embedding the Game File -->
-  <iframe src="../doodle-jump/index.html" title="Your Game"></iframe>
-
-  <!-- Font Awesome Icons (adjust the path accordingly) -->
+  <nav class="player-controls" aria-label="Game controls">
+    <button id="home-button" class="nav-button" type="button" onclick="goHome()" aria-label="Back to game library">
+      <i class="fas fa-arrow-left" aria-hidden="true"></i><span class="button-label">Library</span>
+    </button>
+    <button id="fullscreen-button" class="nav-button" type="button" onclick="toggleFullScreen()" aria-label="Toggle fullscreen">
+      <i class="fas fa-expand" aria-hidden="true"></i><span class="button-label">Fullscreen</span>
+    </button>
+  </nav>
+  <iframe src="../doodle-jump/index.html" title="Doodle Jump" allowfullscreen></iframe>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-
-  <!-- JavaScript Functions -->
   <script>
     function goHome() {
-      // Redirect to the home page
-      window.location.href = '../games.html'; // Adjust the path to the home file
+      window.location.href = '../games.html';
     }
 
     function toggleFullScreen() {
